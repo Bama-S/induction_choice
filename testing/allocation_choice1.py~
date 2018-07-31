@@ -1,5 +1,6 @@
 import csv
-import random
+from random import sample
+
 
 def allocatefirsta(row,coursea):    
     #print row[2]
@@ -101,7 +102,11 @@ with open("courseF.csv", "w") as output:
     #courseE = csv.writer(output, lineterminator = '\n')
     #courseF = csv.writer(output, lineterminator = '\n')
 
-coursea = random.shuffle(coursea)
-    
+print coursea
+print "-------------------------"
+print "After shuffling"
+coursea = (sample(coursea,len(coursea)))
+print coursea
+
     
 

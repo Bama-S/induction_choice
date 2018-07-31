@@ -1,4 +1,5 @@
 import csv
+import random
 
 def allocatefirsta(row,coursea):    
     #print row[2]
@@ -99,7 +100,8 @@ with open("courseF.csv", "w") as output:
     #courseD = csv.writer(output, lineterminator = '\n')
     #courseE = csv.writer(output, lineterminator = '\n')
     #courseF = csv.writer(output, lineterminator = '\n')
-    
+
+#coursea = random.shuffle(coursea)
     
     
 

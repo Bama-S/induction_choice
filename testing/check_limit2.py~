@@ -28,8 +28,7 @@ def allocate(choices,course_contents,course_students,pending):
                         
                        
                         
-                    
-    
+                     
     
     
 
