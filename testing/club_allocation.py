@@ -15,6 +15,14 @@ CASE 1 : Ideal case , no handling required
 CASE 2 : Allocate to all students 
 CASE 3 : Shuffle students and allocate to top students
 
+
+
+Input file format
+
+Choice1 Choice2 Choice3
+club1   club2   club3
+club2   club1   club3
+
 '''
 
 
@@ -63,56 +71,84 @@ def correct_club_alloc( club_number , club_capacity , priority ) :
     #old students + new students
     return curr_list + selected_students[:end_index]
 
+def club_name_to_number(target_club_name  ) :
+    return club_name.index(target_club_name)
+
+
+
+
+def convert_to_priority_matrix(priority_matrix) :
+
+    new_pm =[] 
+    for s_no , student in enumerate(priority_matrix) :
+        
+        temp = [None]*number_of_clubs
+        
+        for priority , club_name in enumerate(student,1) :
+            club_num = club_name_to_number(club_name, )
+            temp[club_num] = priority
+ 
+        new_pm.append(temp)
+
+    return new_pm
+             
+
+
 #get input file from Command line
 if( len(sys.argv) != 2 ) :
     print "Please provide args "
     print "python club_allocation.py <filename>"
     sys.exit(0)
 
-#Input Processing
-with open(sys.argv[1]) as csvfile:
-    csvData =  csv.reader(csvfile,delimiter=',')
+if __name__ == "main":
+    #Input Processing
+    with open(sys.argv[1]) as csvfile:
+        csvData =  csv.reader(csvfile,delimiter=',')
 
-    #save all data to memory
-    for row in csvData:
-        priority_matrix.append(row[2:])
-        student_name.append(row[1])
-    
-    #All club names as list
-    club_name = priority_matrix[0]
-    
-    #Remove all Club Names from matrix
-    priority_matrix = priority_matrix[ 1: ]
+        #save all data to memory
+        for row in csvData:
+            priority_matrix.append(row[2:])
+            student_name.append(row[1])
+        
+        #Remove all Club Names from priority_matrix
+        priority_matrix = priority_matrix[ 1: ]
 
-    
-    number_of_students = len(priority_matrix)
-    number_of_clubs = len(priority_matrix[0])
-    
-    club_cap = number_of_students / number_of_clubs
-    
-    #Initialize Using csv data
-    available = [True] * number_of_students
-    result_matrix = [list()] * number_of_clubs
+        #All club names as list
+        for row in priority_matrix:
+            club_name += row[2:] 
 
-    #To give different size to every club change code here
-    club_capacity = [club_cap] * number_of_clubs
-    
+        #remove duplicate names
+        club_name = list( set(club_name) )
+        
+        number_of_students = len(priority_matrix)
+        number_of_clubs = len(priority_matrix[0])
+        
+        club_cap = number_of_students / number_of_clubs
+        
+        #Initialize Using csv data
+        available = [True] * number_of_students
+        result_matrix = [list()] * number_of_clubs
 
+        #To give different size to every club change code here
+        club_capacity = [club_cap] * number_of_clubs
 
-#Process Input
-for p in range(1 , number_of_clubs+1) :
-    for c_n in range(0 ,  number_of_clubs):
-        result_matrix[c_n] = correct_club_alloc( c_n , club_capacity[c_n] , p )
-
-#Write file
-for indx ,row in enumerate(result_matrix):
-
-    with open( folder_name + '/' + club_name[indx]+".csv" , 'wb' ) as myfile :
-
-        wr = csv.writer(myfile)
-        wr.writerow( ["Name"] )   
-        for r in row:
-            wr.writerow( [student_name[r+1]] )         
+    priority_matrix = convert_to_priority_matrix(priority_matrix)
 
 
-print "Please Check  ",folder_name , " folder "
+    #Process Input
+    for p in range(1 , number_of_clubs+1) :
+        for c_n in range(0 ,  number_of_clubs):
+            result_matrix[c_n] = correct_club_alloc( c_n , club_capacity[c_n] , p )
+
+    #Write file
+    for indx ,row in enumerate(result_matrix):
+
+        with open( folder_name + '/' + club_name[indx]+".csv" , 'wb' ) as myfile :
+
+            wr = csv.writer(myfile)
+            wr.writerow( ["Name"] )   
+            for r in row:
+                wr.writerow( [student_name[r+1]] )         
+
+
+    print "Please Check  ",folder_name , " folder "
