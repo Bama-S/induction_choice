@@ -38,10 +38,11 @@ result_matrix = []
 student_name = []
 club_name = []
 club_capacity = []
-
+club_allocate_capacity = []
 #this data is also extracted from csv
 number_of_students = 0
 number_of_clubs = 0
+number_of_students_allocated = 0
 
 
 #this code does the magic!!
@@ -56,7 +57,8 @@ def correct_club_alloc( club_number , club_capacity , priority ) :
 
     for indx , row in enumerate(priority_matrix):
         if row[club_number] == None :
-            continue
+            print "There is Improper value in line ", indx+1
+            sys.exit(0)
 
         # int() because csv reads everything as char
         if int(row[club_number]) == int(priority) and available[indx] == True :
@@ -135,8 +137,6 @@ with open(sys.argv[1]) as csvfile:
     #To give different size to every club change code here
     club_capacity = [club_cap] * number_of_clubs
 
-print "Club names detected "
-print club_name
 
 priority_matrix = convert_to_priority_matrix(priority_matrix)
 
@@ -145,6 +145,11 @@ priority_matrix = convert_to_priority_matrix(priority_matrix)
 for p in range(1 , number_of_clubs+1) :
     for c_n in range(0 ,  number_of_clubs):
         result_matrix[c_n] = correct_club_alloc( c_n , club_capacity[c_n] , p )
+
+#count allocated
+for row in result_matrix :  
+    club_allocate_capacity.append(len(row))
+    number_of_students_allocated += len(row)
 
 #Write file
 for indx ,row in enumerate(result_matrix):
@@ -156,5 +161,13 @@ for indx ,row in enumerate(result_matrix):
         for r in row:
             wr.writerow( [student_name[r+1]] )         
 
+
+print "================== SUMMARY =================="
+print "Total students " ,number_of_students
+print "Total Clubs " , number_of_clubs
+print "Names of Clubs " ,club_name
+print "Club Capacity ", club_capacity
+print "Actual Capacity ",club_allocate_capacity
+print "Allocated Students " ,number_of_students_allocated
 
 print "Please Check  ",folder_name , " folder "
