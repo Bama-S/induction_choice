@@ -39,11 +39,13 @@ student_name = []
 club_name = []
 club_capacity = []
 club_allocate_capacity = []
+
 #this data is also extracted from csv
 number_of_students = 0
 number_of_clubs = 0
 number_of_students_allocated = 0
 
+######################### Healper Code Starts #########################
 
 #this code does the magic!!
 def correct_club_alloc( club_number , club_capacity , priority ) :
@@ -80,8 +82,6 @@ def club_name_to_number(target_club_name  ) :
     return club_name.index(target_club_name)
 
 
-
-
 def convert_to_priority_matrix(priority_matrix) :
 
     new_pm =[] 
@@ -100,10 +100,23 @@ def convert_to_priority_matrix(priority_matrix) :
 
 
 #get input file from Command line
-if( len(sys.argv) != 2 ) :
+if( len(sys.argv) != 3 ) :
     print "Please provide args "
-    print "python club_allocation.py <filename>"
+    print "python club_allocation.py <student_data_file> <club_data_file>"
     sys.exit(0)
+
+
+######################### Healper Code Ends #########################
+
+#Main Routine
+
+#Read Club data file
+with open(sys.argv[2]) as csvfile:
+    csvData = csv.reader(csvfile,delimiter=',')
+    for row in csvData:
+        club_name.append(row[0])
+        club_capacity.append(int(row[1]) )
+
 
 
 #Input Processing
@@ -119,11 +132,11 @@ with open(sys.argv[1]) as csvfile:
     priority_matrix = priority_matrix[ 1: ]
 
     #All club names as list
-    for row in priority_matrix:
-        club_name += row[2:] 
+#    for row in priority_matrix:
+#        club_name += row[2:] 
 
     #remove duplicate names
-    club_name = list( set(club_name) )
+    #club_name = list( set(club_name) )
     
     number_of_students = len(priority_matrix)
     number_of_clubs = len(club_name)
@@ -135,7 +148,7 @@ with open(sys.argv[1]) as csvfile:
     result_matrix = [list()] * number_of_clubs
 
     #To give different size to every club change code here
-    club_capacity = [club_cap] * number_of_clubs
+    #club_capacity = [club_cap] * number_of_clubs
 
 
 priority_matrix = convert_to_priority_matrix(priority_matrix)
