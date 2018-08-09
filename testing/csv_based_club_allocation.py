@@ -41,9 +41,7 @@ club_capacity = []
 club_allocate_capacity = []
 
 #this data is also extracted from csv
-number_of_students = 0
-number_of_clubs = 0
-number_of_students_allocated = 0
+number_of_students , number_of_clubs , number_of_students_allocated , pm_start  = 0 , 0 , 0 , 0
 
 ######################### Healper Code Starts #########################
 
@@ -100,15 +98,24 @@ def convert_to_priority_matrix(priority_matrix) :
 
 
 #get input file from Command line
-if( len(sys.argv) != 3 ) :
+if( len(sys.argv) != 4 ) :
     print "Please provide args "
-    print "python club_allocation.py <student_data_file> <club_data_file>"
+    print "python csv_based_club_allocation.py <student_data_file> <club_data_file> <start_of_choices>"
+
+    print "--------- EXAMPLE --------- "
+    print "python csv_based_club_allocation.py choice_1.csv  club_data.csv 2"
+    print "Here choice_1.csv is file where my data is"
+    print "club_data.csv is file where clubname and club capacity is present"
+    print "start_of_choices means in choice_1.csv which column indicates start of choices here its column 2"
     sys.exit(0)
 
 
 ######################### Healper Code Ends #########################
 
 #Main Routine
+
+pm_start = int(sys.argv[3])
+
 
 #Read Club data file
 with open(sys.argv[2]) as csvfile:
@@ -125,7 +132,7 @@ with open(sys.argv[1]) as csvfile:
 
     #save all data to memory
     for row in csvData:
-        priority_matrix.append(row[2:])
+        priority_matrix.append(row[pm_start:])
         student_name.append(row[1])
     
     #Remove all Club Names from priority_matrix
