@@ -36,6 +36,7 @@ priority_matrix = []
 available = []
 result_matrix = []
 student_name = []
+student_data = []
 club_name = []
 club_capacity = []
 club_allocate_capacity = []
@@ -134,6 +135,7 @@ with open(sys.argv[1]) as csvfile:
     for row in csvData:
         priority_matrix.append(row[pm_start:])
         student_name.append(row[1])
+        student_data.append(row[1:pm_start])
     
     #Remove all Club Names from priority_matrix
     priority_matrix = priority_matrix[ 1: ]
@@ -158,7 +160,7 @@ with open(sys.argv[1]) as csvfile:
     #club_capacity = [club_cap] * number_of_clubs
 
 
-priority_matrix = convert_to_priority_matrix(priority_matrix)
+#priority_matrix = convert_to_priority_matrix(priority_matrix)
 
 
 #Process Input
@@ -177,9 +179,9 @@ for indx ,row in enumerate(result_matrix):
     with open( folder_name + '/' + club_name[indx]+".csv" , 'wb' ) as myfile :
 
         wr = csv.writer(myfile)
-        wr.writerow( ["Name"] )   
+        #wr.writerow( club_name[1:pm_start] )   
         for r in row:
-            wr.writerow( [student_name[r+1]] )         
+            wr.writerow( student_data[r] )         
 
 
 print "================== SUMMARY =================="
