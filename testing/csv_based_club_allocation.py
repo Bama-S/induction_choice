@@ -141,7 +141,8 @@ with open(sys.argv[1]) as csvfile:
     
     #Remove all Club Names from priority_matrix
     priority_matrix = priority_matrix[ 1: ]
-    
+    student_data = student_data[1:]    
+
     number_of_students = len(priority_matrix)
     number_of_clubs = len(club_name)
     
@@ -151,6 +152,7 @@ with open(sys.argv[1]) as csvfile:
     available = [True] * number_of_students
     result_matrix = [list()] * number_of_clubs
 
+#print student_data
 
 #Process Input
 for p in range(1 , number_of_clubs+1) :
@@ -170,15 +172,22 @@ for indx ,row in enumerate(result_matrix):
         wr = csv.writer(myfile)
 
         for r in row:
-            wr.writerow( student_data[r+1] )         
+            wr.writerow( student_data[r] )         
 
 
 print "================== SUMMARY =================="
 print "Total students " ,number_of_students
 print "Total Clubs " , number_of_clubs
-print "Names of Clubs " ,club_name
-print "Club Capacity ", club_capacity
-print "Actual Capacity ",club_allocate_capacity
-print "Allocated Students " ,number_of_students_allocated
+
+count = 0
+for i in range(0 , number_of_clubs ):
+    print club_capacity[i] , "\t" , club_allocate_capacity[i] , "\t" , club_name[i]
+    count += club_allocate_capacity[i]
+
+#print "Names of Clubs " ,club_name
+#print "Club Capacity ", club_capacity
+#print "Actual Capacity ",club_allocate_capacity
+
+print "Allocated Students " ,count
 
 print "Please Check  ",folder_name , " folder "
