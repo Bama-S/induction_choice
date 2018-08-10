@@ -56,12 +56,12 @@ def correct_club_alloc( club_number , club_capacity , priority ) :
     #Updating capacity to restrict size
     club_capacity -= len(curr_list)
 
-    print "Allocating for ", club_name[club_number] ," priority " , priority
-
+ 
     for indx , row in enumerate(priority_matrix):
-        if row[club_number] == None :
-            print "There is Improper value in line ", indx+1
-            sys.exit(0)
+        if row[club_number] == None or row[club_number] == "" :
+            #print "There is Improper value in line ", indx+1
+            continue 
+     
 
         # int() because csv reads everything as char
         if int(row[club_number]) == int(priority) and available[indx] == True :
@@ -76,7 +76,6 @@ def correct_club_alloc( club_number , club_capacity , priority ) :
     for indx in selected_students[:end_index]:
         available[indx] = False
     
-    print "selected " , selected_students[:end_index]
     #old students + new students
     return curr_list + selected_students[:end_index]
 
@@ -143,13 +142,6 @@ with open(sys.argv[1]) as csvfile:
     #Remove all Club Names from priority_matrix
     priority_matrix = priority_matrix[ 1: ]
     
-    #All club names as list
-#    for row in priority_matrix:
-#        club_name += row[2:] 
-
-    #remove duplicate names
-    #club_name = list( set(club_name) )
-    
     number_of_students = len(priority_matrix)
     number_of_clubs = len(club_name)
     
@@ -159,13 +151,6 @@ with open(sys.argv[1]) as csvfile:
     available = [True] * number_of_students
     result_matrix = [list()] * number_of_clubs
 
-    #To give different size to every club change code here
-    #club_capacity = [club_cap] * number_of_clubs
-
-
-#priority_matrix = convert_to_priority_matrix(priority_matrix)
-
-print student_data
 
 #Process Input
 for p in range(1 , number_of_clubs+1) :
@@ -174,7 +159,6 @@ for p in range(1 , number_of_clubs+1) :
 
 #count allocated
 for indx ,row in enumerate(result_matrix) :
-    print club_name[indx] , row  
     club_allocate_capacity.append(len(row))
     number_of_students_allocated += len(row)
 
