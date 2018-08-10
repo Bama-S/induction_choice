@@ -56,10 +56,12 @@ def correct_club_alloc( club_number , club_capacity , priority ) :
     #Updating capacity to restrict size
     club_capacity -= len(curr_list)
 
+ 
     for indx , row in enumerate(priority_matrix):
-        if row[club_number] == None :
-            print "There is Improper value in line ", indx+1
-            sys.exit(0)
+        if row[club_number] == None or row[club_number] == "" :
+            #print "There is Improper value in line ", indx+1
+            continue 
+     
 
         # int() because csv reads everything as char
         if int(row[club_number]) == int(priority) and available[indx] == True :
@@ -134,18 +136,11 @@ with open(sys.argv[1]) as csvfile:
     #save all data to memory
     for row in csvData:
         priority_matrix.append(row[pm_start:])
-        student_name.append(row[1])
-        student_data.append(row[1:pm_start])
+        student_name.append(row[0])
+        student_data.append(row[0:pm_start])
     
     #Remove all Club Names from priority_matrix
     priority_matrix = priority_matrix[ 1: ]
-
-    #All club names as list
-#    for row in priority_matrix:
-#        club_name += row[2:] 
-
-    #remove duplicate names
-    #club_name = list( set(club_name) )
     
     number_of_students = len(priority_matrix)
     number_of_clubs = len(club_name)
@@ -156,12 +151,6 @@ with open(sys.argv[1]) as csvfile:
     available = [True] * number_of_students
     result_matrix = [list()] * number_of_clubs
 
-    #To give different size to every club change code here
-    #club_capacity = [club_cap] * number_of_clubs
-
-
-#priority_matrix = convert_to_priority_matrix(priority_matrix)
-
 
 #Process Input
 for p in range(1 , number_of_clubs+1) :
@@ -169,7 +158,7 @@ for p in range(1 , number_of_clubs+1) :
         result_matrix[c_n] = correct_club_alloc( c_n , club_capacity[c_n] , p )
 
 #count allocated
-for row in result_matrix :  
+for indx ,row in enumerate(result_matrix) :
     club_allocate_capacity.append(len(row))
     number_of_students_allocated += len(row)
 
@@ -179,9 +168,9 @@ for indx ,row in enumerate(result_matrix):
     with open( folder_name + '/' + club_name[indx]+".csv" , 'wb' ) as myfile :
 
         wr = csv.writer(myfile)
-        #wr.writerow( club_name[1:pm_start] )   
+
         for r in row:
-            wr.writerow( student_data[r] )         
+            wr.writerow( student_data[r+1] )         
 
 
 print "================== SUMMARY =================="
