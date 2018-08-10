@@ -2,6 +2,9 @@ import csv  ,sys , os ,random
 
 club_name = []
 fill_data = []
+default = 660
+if len(sys.argv) == 3:
+    default = int(sys.argv[2])
 
 folder_name = "./output"
 
@@ -19,16 +22,14 @@ with open(sys.argv[1]) as csvfile:
 num_of_clubs = len(club_name[0][4:])
 
 
-for i in range(1,660+1) :
+for i in range(1,default+1) :
     temp = [ str(i)  , str("20162020"+str(i)) , "20172020"+str(i) ,"MyName"  ]
     random_prior =  list(range(1,num_of_clubs+1)) 
     random.shuffle( random_prior )
     temp += random_prior
     fill_data.append(temp)
 
-for row in fill_data:
-    print row
-   
+
 
 with open( './' + "test_data.csv" , 'wb' ) as myfile :
     wr = csv.writer(myfile)
