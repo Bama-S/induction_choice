@@ -40,15 +40,16 @@ student_data = []
 club_name = []
 club_capacity = []
 club_allocate_capacity = []
+priority_stats = []
 
 #this data is also extracted from csv
-number_of_students , number_of_clubs , number_of_students_allocated , pm_start  = 0 , 0 , 0 , 0
+number_of_students , number_of_clubs , number_of_students_allocated , pm_start , alloc_this_loop = 0 , 0 , 0 , 0 , 0
 
 ######################### Healper Code Starts #########################
 
 #this code does the magic!!
 def correct_club_alloc( club_number , club_capacity , priority ) :
-
+    global alloc_this_loop
     curr_list = result_matrix[club_number]
     selected_students = []
     end_index = 0 
@@ -60,8 +61,7 @@ def correct_club_alloc( club_number , club_capacity , priority ) :
     for indx , row in enumerate(priority_matrix):
         if row[club_number] == None or row[club_number] == "" :
             #print "There is Improper value in line ", indx+1
-            continue 
-     
+            continue
 
         # int() because csv reads everything as char
         if int(row[club_number]) == int(priority) and available[indx] == True :
@@ -75,29 +75,14 @@ def correct_club_alloc( club_number , club_capacity , priority ) :
     #Blocking students from appearing next time
     for indx in selected_students[:end_index]:
         available[indx] = False
+        student_data[indx].append(priority)
+    
+    alloc_this_loop += end_index
+
+
     
     #old students + new students
     return curr_list + selected_students[:end_index]
-
-def club_name_to_number(target_club_name  ) :
-    return club_name.index(target_club_name)
-
-
-def convert_to_priority_matrix(priority_matrix) :
-
-    new_pm =[] 
-    for s_no , student in enumerate(priority_matrix) :
-        
-        temp = [None]*number_of_clubs
-        
-        for priority , club_name in enumerate(student,1) :
-            club_num = club_name_to_number(club_name )
-            temp[club_num] = priority
- 
-        new_pm.append(temp)
-
-    return new_pm
-             
 
 
 #get input file from Command line
@@ -156,8 +141,14 @@ with open(sys.argv[1]) as csvfile:
 
 #Process Input
 for p in range(1 , number_of_clubs+1) :
+    
+
     for c_n in range(0 ,  number_of_clubs):
         result_matrix[c_n] = correct_club_alloc( c_n , club_capacity[c_n] , p )
+        
+    
+    priority_stats.append(alloc_this_loop)
+    alloc_this_loop = 0
 
 #count allocated
 for indx ,row in enumerate(result_matrix) :
@@ -184,6 +175,9 @@ for i in range(0 , number_of_clubs ):
     print club_capacity[i] , "\t" , club_allocate_capacity[i] , "\t" , club_name[i]
     count += club_allocate_capacity[i]
 
+print "Priority Stats "
+for indx , p in enumerate(priority_stats,1):
+    print indx ,p
 #print "Names of Clubs " ,club_name
 #print "Club Capacity ", club_capacity
 #print "Actual Capacity ",club_allocate_capacity
