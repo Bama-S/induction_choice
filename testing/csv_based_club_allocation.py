@@ -185,3 +185,23 @@ for indx , p in enumerate(priority_stats,1):
 print "Allocated Students " ,count
 
 print "Please Check  ",folder_name , " folder "
+
+
+print "================ First Three ================"
+
+for indx , c_n in enumerate(club_name) :
+    print c_n
+    count = 0 
+    for p in range(1,4):
+        
+        for i in range(0 , number_of_students):
+            if priority_matrix[i][indx] == None or priority_matrix[i][indx] == "":
+                continue 
+                
+            if int(priority_matrix[i][indx]) == p :
+                count += 1
+ 
+        print count
+
+
+    
