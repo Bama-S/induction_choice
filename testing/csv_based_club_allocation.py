@@ -86,7 +86,7 @@ def correct_club_alloc( club_number , club_capacity , priority ) :
 
 
 #get input file from Command line
-if( len(sys.argv) != 4 ) :
+if( len(sys.argv) != 5 ) :
     print "Please provide args "
     print "python csv_based_club_allocation.py <student_data_file> <club_data_file> <start_of_choices>"
 
@@ -103,7 +103,7 @@ if( len(sys.argv) != 4 ) :
 #Main Routine
 
 pm_start = int(sys.argv[3])
-
+batch = sys.argv[4]
 
 #Read Club data file
 with open(sys.argv[2]) as csvfile:
@@ -158,7 +158,7 @@ for indx ,row in enumerate(result_matrix) :
 #Write file
 for indx ,row in enumerate(result_matrix):
 
-    with open( folder_name + '/' + club_name[indx]+".csv" , 'wb' ) as myfile :
+    with open( folder_name + '/' + club_name[indx]+"_"+batch+""+".csv" , 'wb' ) as myfile :
 
         wr = csv.writer(myfile)
 
@@ -197,7 +197,7 @@ for indx , c_n in enumerate(club_name) :
         for i in range(0 , number_of_students):
             if priority_matrix[i][indx] == None or priority_matrix[i][indx] == "":
                 continue 
-                
+
             if int(priority_matrix[i][indx]) == p :
                 count += 1
  
