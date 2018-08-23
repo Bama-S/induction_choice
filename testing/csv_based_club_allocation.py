@@ -204,4 +204,8 @@ for indx , c_n in enumerate(club_name) :
         print count
 
 
+<<<<<<< HEAD
     
+=======
+    
+>>>>>>> 06eb7e37ce1e782e2ec8d233e3b5738ac172e08e
